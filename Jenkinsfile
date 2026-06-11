@@ -20,10 +20,16 @@ pipeline {
             }
         }
 
-        stage('QA - SonarQube Analysis') {
+        stage('SonarCloud Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=akashtech07'
+                withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_TOKEN')]) {
+                    sh '''
+                        mvn clean verify sonar:sonar \
+                        -Dsonar.projectKey=akashtech07 \
+                        -Dsonar.organization=Akash \
+                        -Dsonar.host.url=https://sonarcloud.io \
+                        -Dsonar.login=$SONAR_TOKEN
+                    '''
                 }
             }
         }
