@@ -7,9 +7,10 @@ pipeline {
 
     stages {
 
-        stage('Check Maven') {
+        stage('Checkout') {
             steps {
-                sh 'mvn -version'
+                git branch: 'main',
+                    url: 'https://github.com/akashtech07/simple-java-maven-app1.git'
             }
         }
 
@@ -21,8 +22,8 @@ pipeline {
 
         stage('QA - SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQubeScanner') {
-                    sh 'mvn clean verify sonar:sonar'
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=akashtech07'
                 }
             }
         }
@@ -36,10 +37,10 @@ pipeline {
 
     post {
         success {
-            echo 'Build completed successfully!'
+            echo 'Build Successful ✔'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Build Failed ❌'
         }
     }
 }
