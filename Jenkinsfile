@@ -25,10 +25,10 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_TOKEN')]) {
                     sh '''
                         mvn clean verify sonar:sonar \
-                        -Dsonar.projectKey=akashtech07 \
-                        -Dsonar.organization=Akash \
+                        -Dsonar.projectKey=akash-org_project \
+                        -Dsonar.organization=akash-org \
                         -Dsonar.host.url=https://sonarcloud.io \
-                        -Dsonar.login=$SONAR_TOKEN
+                        -Dsonar.token=$SONAR_TOKEN
                     '''
                 }
             }
